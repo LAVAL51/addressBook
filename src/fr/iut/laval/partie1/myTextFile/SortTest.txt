@@ -1,0 +1,7 @@
+LAVAL	Anthony	41 rue Corneille 87270 COUZEIX
+LaPointe	Boby	54 rue de Paris 67000 PARIS
+Boby	LaPointe	This is an address
+LeBarbare	Conan	dddd
+Zurfu	Zurfu	Zurfu
+Wazabi	Wazabi	Wazabi
+Wab	Wab	Wab

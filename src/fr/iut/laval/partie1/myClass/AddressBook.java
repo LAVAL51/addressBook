@@ -94,7 +94,8 @@ public class AddressBook {
         for (Address value : addressList) {
             if (value != null) {
                 for (String searchSetting : searchSettings) {
-                    if (searchSetting != null && this.isValidAddressComparedSearch(value, searchSetting)) {
+                    boolean isValidResult = this.isValidAddressComparedSearch(value, searchSetting);
+                    if (isValidResult) {
                         if (searchSetting.equals(mySearch)) {
                             System.out.println(value);
                             result = true;
@@ -123,10 +124,64 @@ public class AddressBook {
         return nbNull;
     }
 
-    public void sortAddress(Address[] addresseList) {
-        // System.out.println("You want to sort in ascending (A) or descending (D) order ?");
-        // String sortOrder = scanner.nextLine();
-        //TODO
+    public void sortAddressByOneCriteria(Address[] addressList) {
+
+        System.out.println("You want to sort by \n 1. Firstname \n 2. Lastname \n 3. Address ");
+        int choiceSortCriteria = SCANNER.nextInt();
+
+        System.out.println("You want to by \n 1. ascending order \n 2. descending order");
+        int sortChoice = SCANNER.nextInt();
+
+        int numberOfElementToSort = addressList.length - this.countNbNullInArray(addressList);
+        String[] criteria = new String[numberOfElementToSort];
+
+        for (Address address : addressList) {
+            for (int i = 0; i < criteria.length; i++) {
+                if (criteria[i] == null) {
+                    switch (choiceSortCriteria) {
+                        case 1:
+                            criteria[i] = address.getFirstname();
+                            break;
+                        case 2:
+                            criteria[i] = address.getLastname();
+                            break;
+                        case 3:
+                            criteria[i] = address.getAddress();
+                            break;
+                        default:
+                            System.out.println("Invalid input !!");
+                    }
+                    break;
+                }
+            }
+        }
+
+        String temp;
+
+        for (int i = 0; i < numberOfElementToSort; i++) {
+            for (int j = i + 1; j < numberOfElementToSort; j++) {
+                assert criteria[i] != null;
+                int compare = criteria[i].compareTo(criteria[j]);
+                if (sortChoice == 1) {
+                    if (compare > 0) {
+                        temp = criteria[i];
+                        criteria[i] = criteria[j];
+                        criteria[j] = temp;
+                    }
+                } else {
+                    if (compare < 0) {
+                        temp = criteria[i];
+                        criteria[i] = criteria[j];
+                        criteria[j] = temp;
+                    }
+                }
+            }
+        }
+        System.out.println(
+                "The names in alphabetical order are: ");
+        for (int i = 0; i < numberOfElementToSort; i++) {
+            System.out.println(criteria[i]);
+        }
     }
 
     public void removeAddress(Address[] addressList) {
@@ -138,11 +193,9 @@ public class AddressBook {
 
         for (int i = 0; i < addressList.length; i++) {
             if (addressList[i] != null) {
-                String lastname = addressList[i].getLastname();
-                String firstname = addressList[i].getFirstname();
-                String address = addressList[i].getAddress();
                 for (String search : mySearch) {
-                    if (firstname.equals(search) || lastname.equals(search) || address.equals(search)) {
+                    boolean isValidResult = this.isValidAddressComparedSearch(addressList[i], search);
+                    if (isValidResult) {
                         System.out.println("The person you want to remove is " + addressList[i] + " ? Y or N");
                         answer = SCANNER.nextLine();
                         if ("Y".equals(answer) || "y".equals(answer)) {

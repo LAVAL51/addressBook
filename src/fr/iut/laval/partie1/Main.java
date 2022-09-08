@@ -40,6 +40,7 @@ public class Main {
                     addressBook.searchAddressByCriteria(addressList);
                     break;
                 case 6:
+                    addressBook.sortAddressByOneCriteria(addressList);
                     break;
                 case 7:
                     readingTextFile.loadFile(addressList);
