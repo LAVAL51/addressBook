@@ -5,8 +5,8 @@ import java.util.Scanner;
 public class AddressBook {
 
     //Settings
-    private final Address address = new Address();
-    private final Scanner scanner = new Scanner(System.in);
+    private final Address ADDRESS = new Address();
+    private final Scanner SCANNER = new Scanner(System.in);
 
 
     // Method to list all address
@@ -19,8 +19,7 @@ public class AddressBook {
     public void addNewAddress(Address[] addressList) {
         for (int i = 0; i < addressList.length; i++) {
             if (addressList[i] == null) {
-
-                addressList[i] = this.address.newAddress();
+                addressList[i] = this.ADDRESS.newAddress();
                 break;
             }
         }
@@ -35,9 +34,9 @@ public class AddressBook {
         }
     }
 
-    public void searchAddress(Address[] addressList) {
+    public void searchAddressByKeyWords(Address[] addressList) {
         System.out.println("Please enter your search (you can search by firstname, lastname or address) ");
-        String personSearch = scanner.nextLine();
+        String personSearch = SCANNER.nextLine();
         String[] mySearch = personSearch.split(" ");
         boolean result = false;
 
@@ -54,10 +53,74 @@ public class AddressBook {
                 }
             }
         }
+        isResult(result);
+    }
 
-        if (!result) {
-            System.out.println("We couldn't find the person we were looking for");
+    public void searchAddressByCriteria(Address[] addressList) {
+        System.out.println("You want to search by \n 1. Firstname \n 2. Lastname \n 3. Address \n Please enter all criteria");
+        String[] criteria = SCANNER.nextLine().replace(" ", "").split("");
+
+        int nbLine = addressList.length - this.countNbNullInArray(addressList);
+
+        String[] searchSettings = new String[criteria.length * nbLine];
+        boolean result = false;
+
+        System.out.println("Please enter your search");
+        String mySearch = SCANNER.nextLine();
+
+        for (Address value : addressList) {
+            if (value != null) {
+                for (String cri: criteria) {
+                    for (int i = 0; i < searchSettings.length; i++) {
+                        if (searchSettings[i] == null) {
+                            if (cri.equals("1")) {
+                                searchSettings[i] = value.getFirstname();
+                                break;
+                            }
+                            if (cri.equals("2")) {
+                                searchSettings[i] = value.getLastname();
+                                break;
+                            }
+                            if (cri.equals("3")) {
+                                searchSettings[i] = value.getAddress();
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
         }
+
+        for (Address value : addressList) {
+            if (value != null) {
+                for (String searchSetting : searchSettings) {
+                    if (searchSetting != null && this.isValidAddressComparedSearch(value, searchSetting)) {
+                        if (searchSetting.equals(mySearch)) {
+                            System.out.println(value);
+                            result = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        this.isResult(result);
+    }
+
+    private boolean isValidAddressComparedSearch(Address address, String search) {
+        return search.equals(address.getAddress()) || search.equals(address.getLastname()) || search.equals(address.getFirstname());
+    }
+
+    private void isResult(Boolean result) {
+        if (!result) System.out.println("We couldn't find the person we were looking for");
+    }
+
+    private int countNbNullInArray(Address[] addressList) {
+        int nbNull = 0;
+        for (Address address : addressList) {
+            if (address == null) nbNull++;
+        }
+        return nbNull;
     }
 
     public void sortAddress(Address[] addresseList) {
@@ -68,7 +131,7 @@ public class AddressBook {
 
     public void removeAddress(Address[] addressList) {
         System.out.println("Please enter information of person you wish to remove");
-        String personSearch = scanner.nextLine();
+        String personSearch = SCANNER.nextLine();
         String[] mySearch = personSearch.split(" ");
 
         String answer = "";
@@ -81,7 +144,7 @@ public class AddressBook {
                 for (String search : mySearch) {
                     if (firstname.equals(search) || lastname.equals(search) || address.equals(search)) {
                         System.out.println("The person you want to remove is " + addressList[i] + " ? Y or N");
-                        answer = scanner.nextLine();
+                        answer = SCANNER.nextLine();
                         if ("Y".equals(answer) || "y".equals(answer)) {
                             for (int x = i; x < addressList.length -1; x++) {
                                 addressList[x] = addressList[x+1];
@@ -106,12 +169,7 @@ public class AddressBook {
 
         Address[] addressableTempo;
 
-        int countCaseEmpty = 0;
-        for (Address address: addressList) {
-            if (address == null){
-                countCaseEmpty ++;
-            }
-        }
+        int countCaseEmpty = this.countNbNullInArray(addressList);
 
         if(countCaseEmpty < 5) {
             addressableTempo = new Address[addressList.length + 5];
