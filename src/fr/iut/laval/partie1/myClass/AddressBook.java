@@ -125,13 +125,77 @@ public class AddressBook {
         return nbNull;
     }
 
-    public void sortAddressByOneCriteria(Address[] addressList) {
+    private void binarySearch(Address[] addressList) {
+        System.out.println("You want to search by \n 1. lastname \n 2. firstname \n 3. address");
+        int criteria = SCANNER.nextInt();
 
-        System.out.println("You want to sort by \n 1. Firstname \n 2. Lastname \n 3. Address ");
-        int choiceSortCriteria = SCANNER.nextInt();
+        this.sortAddressByOneCriteria(addressList, criteria, 1);
 
-        System.out.println("You want to by \n 1. ascending order \n 2. descending order");
-        int sortChoice = SCANNER.nextInt();
+        System.out.println("Please enter your search ");
+        String search = SCANNER.nextLine();
+
+        String[] values = new String[addressList.length];
+        switch (criteria) {
+            case 1:
+                for (int i = 0; i < addressList.length; i++) {
+                    values[i] = addressList[i].getLastname();
+                }
+                break;
+            case 2:
+                for (int i = 0; i < addressList.length; i++) {
+                    values[i] = addressList[i].getFirstname();
+                }
+                break;
+            case 3:
+                for (int i = 0; i < addressList.length; i++) {
+                    values[i] = addressList[i].getAddress();
+                }
+                break;
+            default:
+                System.out.println("invalid criteria");
+                break;
+        }
+
+        binarySearch(values, 0, addressList.length, search);
+
+    }
+
+    public String binarySearch(String[] arr, int lowerElement, int hightElement, String search) {
+        if (hightElement >= lowerElement && lowerElement < arr.length) {
+            int mid = lowerElement + (hightElement - lowerElement) / 2;
+            String test = arr[mid];
+            int compare = search.compareToIgnoreCase(test);
+
+            if (compare == 0) {
+                return arr[mid] + "yess";
+            }
+
+            if (arr[arr.length - 1].equals(arr[mid]) || arr[0].equals(arr[mid])) {
+                return "No element found";
+            } else {
+                if (compare < 0) {
+                    return binarySearch(arr, lowerElement, mid, search);
+                } else {
+                    return binarySearch(arr, mid, hightElement, search);
+                }
+            }
+        }
+        return "No element found";
+    }
+    public void sortAddressByOneCriteria(Address[] addressList, int choiceSpe, int orderSpe) {
+
+        int choiceSortCriteria = choiceSpe;
+        if (choiceSpe == 0) {
+            System.out.println("You want to sort by \n 1. Firstname \n 2. Lastname \n 3. Address ");
+            choiceSortCriteria = SCANNER.nextInt();
+        }
+
+        int sortChoice = orderSpe;
+        if(orderSpe == 0) {
+            System.out.println("You want to by \n 1. ascending order \n 2. descending order");
+            sortChoice = SCANNER.nextInt();
+        }
+
 
         int numberOfElementToSort = addressList.length - this.countNbNullInArray(addressList);
         String[] criteria = new String[numberOfElementToSort];
@@ -185,16 +249,25 @@ public class AddressBook {
                 }
             }
         }
+
+        Address[] tempo = new Address[addressList.length];
         System.out.println(
                 "The names in alphabetical order are: ");
         for (int i = 0; i < numberOfElementToSort; i++) {
             for (Address address : addressList) {
                 if ((isFirstname && address.getFirstname().equals(criteria[i])) || (isLastname && address.getLastname().equals(criteria[i])) || (isAddress && address.getAddress().equals(criteria[i]))) {
-                    System.out.println(address.toString());
+                    for (int l = 0; l < tempo.length; l++){
+                        if (tempo[l] == null){
+                            tempo[l] = address;
+                            break;
+                        }
+                    }
                     break;
                 }
             }
         }
+
+        System.arraycopy(tempo, 0, addressList, 0, addressList.length);
     }
 
     public void removeAddress(Address[] addressList) {

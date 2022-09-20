@@ -16,10 +16,10 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         int choice = 0;
 
-        while (choice != 9) {
+        while (choice != 10) {
             addressList = addressBook.checkArrayLength(addressList);
             System.out.println("\n What do you want to do (enter number) ? \n 1. List all addresses \n 2. Add an addresses \n 3. Remove an address" +
-                    "\n 4. Key-words search \n 5. Search by criteria \n 6. Sort list \n 7. Load a list \n 8. Save List \n 9. Quit");
+                    "\n 4. Key-words search \n 5. Search by criteria \n 6. Sort list \n 7. Binary search \n 8. Load a list \n 9. Save List \n 10. Quit");
 
             choice = scanner.nextInt();
 
@@ -40,15 +40,18 @@ public class Main {
                     addressBook.searchAddressByCriteria(addressList);
                     break;
                 case 6:
-                    addressBook.sortAddressByOneCriteria(addressList);
+                    addressBook.sortAddressByOneCriteria(addressList, 0, 0);
+                    addressBook.readAllAddress(addressList);
                     break;
                 case 7:
-                    readingTextFile.loadFile(addressList);
                     break;
                 case 8:
-                    readingTextFile.saveFile(addressList);
+                    readingTextFile.loadFile(addressList);
                     break;
                 case 9:
+                    readingTextFile.saveFile(addressList);
+                    break;
+                case 10:
                     System.out.println("Bye bye");
                     break;
                 default:
