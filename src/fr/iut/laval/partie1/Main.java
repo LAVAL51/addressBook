@@ -18,7 +18,7 @@ public class Main {
 
         while (choice != 9) {
             addressList = addressBook.checkArrayLength(addressList);
-            System.out.println("\n What do you want to do ? \n 1. List all addresses \n 2. Add an addresses \n 3. Remove an address" +
+            System.out.println("\n What do you want to do (enter number) ? \n 1. List all addresses \n 2. Add an addresses \n 3. Remove an address" +
                     "\n 4. Key-words search \n 5. Search by criteria \n 6. Sort list \n 7. Load a list \n 8. Save List \n 9. Quit");
 
             choice = scanner.nextInt();
@@ -63,12 +63,11 @@ public class Main {
 
         ## Code Première partie, saisir et afficher 2 personnes
 
-        Address address2 = new Address("LAVAL", "Anthony", "20", "34 mon address");
-        Address address3 = Address.newAddress();
+        Address address1 = new Address().newAddress();
+        Address address2 = new Address().newAddress();
 
-        System.out.println(address1);
-        System.out.println(address2);
-        System.out.println(address3);
+        System.out.println(address1.toString());
+        System.out.println(address2.toString());
 
         -------------------------------------------------------------------------------------------
 

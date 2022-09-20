@@ -17,14 +17,19 @@ public class TextFile {
         try {
             File myList = new File(ACCESS_PATH + fileName + ".txt");
 
-            BufferedReader obj = new BufferedReader(new FileReader(myList));
+            if (myList.isFile()){
+                BufferedReader obj = new BufferedReader(new FileReader(myList));
 
-            String currentLine;
-            while ((currentLine = obj.readLine()) != null) {
-                String[] words = currentLine.split("\t");
-                ADDRESSBOOK.addNewAddressWithSettings(addressList, words[0], words[1], words[2]);
+                String currentLine;
+                while ((currentLine = obj.readLine()) != null) {
+                    String[] words = currentLine.split("\t");
+                    ADDRESSBOOK.addNewAddressWithSettings(addressList, words[0], words[1], words[2]);
+                }
+                System.out.println("File has been uploaded successfully");
+            } else {
+                System.out.println("File not found");
             }
-            System.out.println("File has been uploaded successfully");
+
         } catch (Exception e) {
             e.printStackTrace();
         }

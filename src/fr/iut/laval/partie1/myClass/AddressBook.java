@@ -49,6 +49,7 @@ public class AddressBook {
                     if (firstname.equals(search) || lastname.equals(search) || address.equals(search)) {
                         System.out.println(value);
                         result = true;
+                        break;
                     }
                 }
             }
@@ -135,18 +136,25 @@ public class AddressBook {
         int numberOfElementToSort = addressList.length - this.countNbNullInArray(addressList);
         String[] criteria = new String[numberOfElementToSort];
 
+        boolean isFirstname = false;
+        boolean isLastname = false;
+        boolean isAddress = false;
+
         for (Address address : addressList) {
             for (int i = 0; i < criteria.length; i++) {
                 if (criteria[i] == null) {
                     switch (choiceSortCriteria) {
                         case 1:
                             criteria[i] = address.getFirstname();
+                            isFirstname = true;
                             break;
                         case 2:
                             criteria[i] = address.getLastname();
+                            isLastname = true;
                             break;
                         case 3:
                             criteria[i] = address.getAddress();
+                            isAddress = true;
                             break;
                         default:
                             System.out.println("Invalid input !!");
@@ -180,7 +188,12 @@ public class AddressBook {
         System.out.println(
                 "The names in alphabetical order are: ");
         for (int i = 0; i < numberOfElementToSort; i++) {
-            System.out.println(criteria[i]);
+            for (Address address : addressList) {
+                if ((isFirstname && address.getFirstname().equals(criteria[i])) || (isLastname && address.getLastname().equals(criteria[i])) || (isAddress && address.getAddress().equals(criteria[i]))) {
+                    System.out.println(address.toString());
+                    break;
+                }
+            }
         }
     }
 

@@ -27,7 +27,6 @@ public class Address {
     // methods
 
     public Address newAddress() {
-
         Address address;
 
         address = new Address();
