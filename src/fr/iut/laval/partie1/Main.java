@@ -44,6 +44,7 @@ public class Main {
                     addressBook.readAllAddress(addressList);
                     break;
                 case 7:
+                    addressBook.startBinarySearch(addressList);
                     break;
                 case 8:
                     readingTextFile.loadFile(addressList);
